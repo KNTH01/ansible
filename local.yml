@@ -1,17 +1,28 @@
 - hosts: localhost
   vars:
-    is_ubuntu: ansible_facts['distribution'] == "Ubuntu"
-    is_archlinux: ansible_facts['distribution'] == "Archlinux"
+    is_ubuntu: "{{ ansible_facts['distribution'] == 'Ubuntu' }}"
+    is_archlinux: "{{ ansible_facts['distribution'] == 'Archlinux' }}"
   pre_tasks:
-  - name: Update Apt
-    when: is_ubuntu
-    become: true
-    apt:
-      force_apt_get: true
-      update_cache: true
-      state: present
-    tags:
-      - install
-      - core
+    - name: Show me ansible_facts
+      ansible.builtin.debug:
+        var: ansible_facts['distribution']
+    - name: Show me var is_ubuntu
+      ansible.builtin.debug:
+        var: is_ubuntu
+    - name: Show me is_archlinux
+      ansible.builtin.debug:
+        var: is_archlinux 
+
+    - name: Update Apt
+      when: is_ubuntu
+      become: true
+      apt:
+        force_apt_get: true
+        update_cache: true
+        state: present
+      tags:
+        - install
+        - core
+
   tasks:
     - include: tasks/zsh.yml
