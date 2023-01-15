@@ -1,0 +1,13 @@
+---
+- name: Install zsh on ArchLinux
+  when: is_archlinux
+  apt: name=zsh
+  tags: &tags_for_zsh_tasks 
+    - zsh
+    - install
+    - dotfiles
+
+- name: Install zsh on Ubuntu
+  when: is_ubuntu
+  apt: name=zsh
+  tags: *tags_for_zsh_tasks
