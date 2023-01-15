@@ -4,7 +4,7 @@
     is_archlinux: ansible_facts['distribution'] == "Archlinux"
   pre_tasks:
   - name: Update Apt
-    when: ansible_facts['distribution'] == "Ubuntu"
+    when: is_ubuntu
     become: true
     apt:
       force_apt_get: true
@@ -14,5 +14,4 @@
       - install
       - core
   tasks:
-    - name: Install zsh
-      apt: name=zsh
+    - include: tasks/zsh.yml
