@@ -1,7 +1,9 @@
 ---
 - name: Install zsh on ArchLinux
   when: is_archlinux
-  apt: name=zsh
+  pacman:
+    name: zsh
+    state: present
   tags: &tags_for_zsh_tasks 
     - zsh
     - install

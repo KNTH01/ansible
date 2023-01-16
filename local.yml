@@ -13,6 +13,13 @@
       ansible.builtin.debug:
         var: is_archlinux 
 
+    # - name: Update and Upgrade Archlinux
+    #   when: is_archlinux
+    #   become: true
+    #   pacman:
+    #     update_cache: yes
+    #     upgrade: yes
+
     - name: Update Apt
       when: is_ubuntu
       become: true
