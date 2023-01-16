@@ -6,8 +6,37 @@
     - zsh
     - install
     - dotfiles
-
 - name: Install zsh on Ubuntu
   when: is_ubuntu
   apt: name=zsh
+  become: true
+  tags: *tags_for_zsh_tasks
+
+- name: Change shell to zsh
+  shell: chsh -s $(which zsh)
+  become: true
+  tags: *tags_for_zsh_tasks
+
+- name: Check if oh-my-zsh is already pulled
+  stat:
+    path: /home/knth/.oh-my-zsh
+  register: has_oh_my_zsh
+  tags: *tags_for_zsh_tasks
+    
+- name: Install oh-my-zsh
+  shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  tags: *tags_for_zsh_tasks
+  when: has_oh_my_zsh.stat.exists == False
+  become_user: knth
+
+- name: Install zsh-autosuggestions plugin
+  ansible.builtin.git:
+    repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
+    dest: "~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+  tags: *tags_for_zsh_tasks
+
+- name: Install zsh-syntax-highlighting plugin
+  ansible.builtin.git:
+    repo: 'https://github.com/zsh-users/zsh-syntax-highlighting.git'
+    dest: "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
   tags: *tags_for_zsh_tasks
