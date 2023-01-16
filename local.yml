@@ -32,4 +32,4 @@
         - core
 
   tasks:
-    - include: tasks/zsh.yml
+    - include_tasks: tasks/zsh.yml
