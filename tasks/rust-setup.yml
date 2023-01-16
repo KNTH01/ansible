@@ -1,0 +1,52 @@
+---
+- name: Install Rust
+  shell: |
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup-init.sh
+    sh rustup-init.sh -y --default-toolchain stable
+  tags: &rust_tags
+    - rust
+
+- name: Set Rust to the path
+  shell: |
+    echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc
+    source ~/.bashrc
+  args:
+    executable: /bin/bash
+
+- name: Install rustfmt
+  shell: |
+    rustup component add rustfmt
+  tags: *rust_tags
+
+- name: Install clippy
+  shell: |
+    rustup component add clippy
+  tags: *rust_tags
+
+- name: Install rust-analyzer
+  shell: |
+    rustup component add rust-analyzer
+  tags: *rust_tags
+
+- name: Install cargo-edit
+  shell: |
+    cargo install cargo-edit
+  tags: *rust_tags
+    
+- name: Install cargo-watch
+  shell: |
+    cargo install cargo-watch
+  tags: *rust_tags
+
+- name: Install Rust tools
+  when: is_ubuntu
+  shell: |
+    cargo install starship
+    cargo install fd
+    cargo install exa
+    cargo install bat
+    cargo install ripgrep
+    cargo install bottom
+    cargo install dust
+  tags: *rust_tags
+

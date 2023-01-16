@@ -34,4 +34,5 @@
   tasks:
     - import_tasks: tasks/zsh.yml
     - import_tasks: tasks/node-setup.yml
+    - import_tasks: tasks/rust-setup.yml
 
