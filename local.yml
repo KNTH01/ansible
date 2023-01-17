@@ -2,6 +2,8 @@
   vars:
     is_ubuntu: "{{ ansible_facts['distribution'] == 'Ubuntu' }}"
     is_archlinux: "{{ ansible_facts['distribution'] == 'Archlinux' }}"
+    ssh_key_src: "./.ssh/id_rsa"
+    ssh_key_dest: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
   pre_tasks:
     - name: Show me ansible_facts
       ansible.builtin.debug:
@@ -32,6 +34,7 @@
         - core
 
   tasks:
+    - import_tasks: tasks/ssh.yml
     - import_tasks: tasks/zsh.yml
     - import_tasks: tasks/node-setup.yml
     - import_tasks: tasks/rust-setup.yml

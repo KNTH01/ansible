@@ -18,7 +18,7 @@ RUN useradd -ms /bin/bash knth
 RUN usermod -aG sudo knth
 RUN echo "knth ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 USER knth
-WORKDIR /home/knth
+WORKDIR /home/knth/ansible
 
 FROM me
 COPY . .
