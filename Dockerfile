@@ -5,6 +5,7 @@ RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y sudo && \
     apt-get install -y vim && \
+    apt-get install -y cmake && \
     apt-get install -y software-properties-common curl git build-essential && \
     apt-add-repository -y ppa:ansible/ansible && \
     apt-get update && \
@@ -18,6 +19,7 @@ RUN useradd -ms /bin/bash knth
 RUN usermod -aG sudo knth
 RUN echo "knth ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 USER knth
+RUN mkdir /home/knth/ansible
 WORKDIR /home/knth/ansible
 
 FROM me
