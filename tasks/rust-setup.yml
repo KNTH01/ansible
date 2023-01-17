@@ -1,17 +1,35 @@
 ---
-- name: Install Rust
-  shell: |
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup-init.sh
-    sh rustup-init.sh -y --default-toolchain stable
+- name: Check if Cargo is installed
+  shell: command -v cargo
+  register: cargo_exists
+  ignore_errors: yes 
   tags: &rust_tags
     - rust
 
-- name: Set Rust to the path
-  shell: |
-    echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc
-    source ~/.bashrc
-  args:
-    executable: /bin/bash
+- name: Download Installer
+  when: cargo_exists is failed
+  get_url:
+    url: https://sh.rustup.rs
+    dest: /tmp/sh.rustup.rs
+    mode: '0755'
+    force: 'yes'
+  tags: *rust_tags
+
+- name: Install Rust & Cargo
+  when: cargo_exists is failed
+  shell: /tmp/sh.rustup.rs -y
+  tags: *rust_tags
+
+# - name: Refresh shell
+#   shell: source ~/.bashrc
+#   tags: *rust_tags
+      
+# - name: Set Rust to the path
+#   shell: |
+#     echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc
+#     source ~/.bashrc
+#   args:
+#     executable: /bin/bash
 
 - name: Install rustfmt
   shell: |
